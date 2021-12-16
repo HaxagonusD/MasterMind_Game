@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Mastermind Game Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the basic structure for a mastermind game on the client.
 
-## Available Scripts
+I wanted this to be a multiplayer game that uses socket.io on a server to route messages in real-time to create a sort-of "race"
+against your opponent.
 
-In the project directory, you can run:
+Due to other projects I'm working on it is currently only the basic structure.
 
-### `npm start`
+## Steps to run
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+`git clone` this repo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Inside the root folder run: `yarn install` or `npm install`
+2. Then run: `yarn start` or `npm start`
+3. Have fun playing the game!
 
-### `npm test`
+### Thought Process
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- I use the useState react hook to keep track of game state
+- I have four input elements and i use useRef so that my buttons know which input elements to refer to
+- I have a button that resets the state back to the initial values effectively restarting the game
+- Whenever the player guesses a number, there is a function that determines which hint to display
+- I use an array to track correct guess. When the player guesses everything correctly they win
+- I use a counter to keep track of guesses. When they player runs out of guesses, they lose
 
-### `npm run build`
+### Improvements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- The reason the code is so verbose and doesn't folow standard practices is because I was very busy coding other projects this week
+- I would use objects to group related state instead of creating state variables for every single piece of game state
+- This would be good if I implement socket.io for multiplayer as I can group the state of client in one object and the state of the other client in another object
+- I would add styling, soundsm animation
+- The way the socket would work is that clients would maintain their own state and would send updates via websockets to other clients when certain ui elements are clicked
+- I wouldn't need a database as data is being stored on the clients
+- I would need a server that routes messages to the appropriate rooms
+- Take more time doing the project. This was all done in 3 hours
