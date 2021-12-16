@@ -44,6 +44,7 @@ function App() {
   //socketio
   const SERVER = "http://localhost:8080";
   useEffect(() => {
+    let mounted = true;
     const socket = io(SERVER, {
       cors: {
         origin: "*",
@@ -56,7 +57,6 @@ function App() {
       console.log("being_joined", data);
       setEnemyClientid(data.myClientId);
     });
-    //implement these
     socket.on("i_lost", () => {
       setWonGame(true);
     });
@@ -64,11 +64,18 @@ function App() {
       setGameOver(true);
     });
     socket.on("receive:updated_enemy_state", (data) => {
-      setEnemyClientGameState(data);
+      console.log("receiving data");
+      console.log(data);
+      if (mounted) {
+        setEnemyClientGameState(data);
+      }
     });
 
     setReferenceToSocket(socket);
-    return () => socket.disconnect();
+    return () => {
+      socket.disconnect();
+      mounted = false;
+    };
   }, []);
 
   //set the initials numbers to guess when the component first loads
@@ -103,18 +110,34 @@ function App() {
   const handleButtonClickOne = () => {
     setNumberOfTries(numberOfTries - 1);
     messageMultiplexer(inputOne.current.value, 0);
+    referenceToSocket.emit("send:update_of_my_state", {
+      payload: createSnapshotOfMyState(),
+      enemyclientId,
+    });
   };
   const handleButtonClickTwo = () => {
     setNumberOfTries(numberOfTries - 1);
     messageMultiplexer(inputTwo.current.value, 1);
+    referenceToSocket.emit("send:update_of_my_state", {
+      payload: createSnapshotOfMyState(),
+      enemyclientId,
+    });
   };
   const handleButtonClickThree = () => {
     setNumberOfTries(numberOfTries - 1);
     messageMultiplexer(inputThree.current.value, 2);
+    referenceToSocket.emit("send:update_of_my_state", {
+      payload: createSnapshotOfMyState(),
+      enemyclientId,
+    });
   };
   const handleButtonClickFour = () => {
     setNumberOfTries(numberOfTries - 1);
     messageMultiplexer(inputFour.current.value, 3);
+    referenceToSocket.emit("send:update_of_my_state", {
+      payload: createSnapshotOfMyState(),
+      enemyclientId,
+    });
   };
 
   //check if the user is out of tried
@@ -187,7 +210,31 @@ function App() {
           <button onClick={handleButtonClickThree}>Guess!</button>
           <input ref={inputFour} type="number"></input>
           <button onClick={handleButtonClickFour}>Guess!</button>
-          <p>{`${2}`}</p>
+          <h3>How close is your opponent to winning</h3>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            {enemyClientGameState.winningTracker.map(
+              (currentElement, index) => {
+                const greenOrRed = currentElement ? "green" : "red";
+                console.log(greenOrRed);
+                return (
+                  <div
+                    style={{
+                      backgroundColor: greenOrRed,
+                      width: "150px",
+                      height: "150px",
+                      border: "1px solid black",
+                    }}
+                    key={index}
+                  ></div>
+                );
+              }
+            )}
+          </div>
         </div>
       );
     }

@@ -23,6 +23,12 @@ io.on("connection", (socket) => {
   socket.on("i_lost", (enemyClientId) => {
     socket.to(enemyClientId).emit("i_lost");
   });
+  socket.on("send:update_of_my_state", (data) => {
+    console.log(data);
+    socket
+      .to(data.enemyclientId)
+      .emit("receive:updated_enemy_state", data.payload);
+  });
 });
 
 server.listen(port, () => {
