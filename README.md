@@ -9,11 +9,10 @@ Due to other projects I'm working on it is currently only the basic structure.
 
 ## Steps to run
 
-`git clone` this repo
-
-1. Inside the root folder run: `yarn install` or `npm install`
-2. Then run: `yarn start` or `npm start`
-3. Have fun playing the game!
+1. `git clone` this repo
+2. Inside the root folder run: `yarn install` or `npm install`
+3. Then run: `yarn start` or `npm start`
+4. Have fun playing the game!
 
 ### Thought Process
 
