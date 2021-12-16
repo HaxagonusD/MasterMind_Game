@@ -13,7 +13,8 @@ This is a multiplayer game where 2 people can join each other through web socket
 5. Go into the server folder
 6. Run: `yarn install` or `npm install`
 7. Then run: `yarn start` or `npm start`
-8. Have fun playing the game!
+8. Go to `localhost:3000` on 2 seperate browser tabs
+9. Have fun playing the game!
 
 ### Thought Process
 
