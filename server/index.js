@@ -25,6 +25,8 @@ io.on("connection", (socket) => {
   });
   socket.on("send:update_of_my_state", (data) => {
     console.log(data);
+    console.log(data.enemyclientId);
+    console.log(data.payload);
     socket
       .to(data.enemyclientId)
       .emit("receive:updated_enemy_state", data.payload);

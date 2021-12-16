@@ -44,7 +44,6 @@ function App() {
   //socketio
   const SERVER = "http://localhost:8080";
   useEffect(() => {
-    let mounted = true;
     const socket = io(SERVER, {
       cors: {
         origin: "*",
@@ -66,15 +65,12 @@ function App() {
     socket.on("receive:updated_enemy_state", (data) => {
       console.log("receiving data");
       console.log(data);
-      if (mounted) {
-        setEnemyClientGameState(data);
-      }
+      setEnemyClientGameState(data);
     });
 
     setReferenceToSocket(socket);
     return () => {
       socket.disconnect();
-      mounted = false;
     };
   }, []);
 
@@ -140,10 +136,19 @@ function App() {
     });
   };
 
-  //check if the user is out of tried
+  useEffect(() => {}, [numberOfTries]);
+
   useEffect(() => {
+    //check if the user is out of tries
     if (numberOfTries === 0) {
       setGameOver(true);
+    }
+    //whenever the user clicks on a button send the enemyclient the updated state
+    if (referenceToSocket) {
+      referenceToSocket.emit("send:update_of_my_state", {
+        payload: createSnapshotOfMyState(),
+        enemyclientId,
+      });
     }
   }, [numberOfTries]);
 
@@ -175,6 +180,7 @@ function App() {
       );
     }
 
+    //what to show if you won the game
     if (wonGame) {
       referenceToSocket.emit("i_won", enemyclientId);
       return (
@@ -184,6 +190,7 @@ function App() {
           <p>Refresh the page to start again</p>
         </div>
       );
+      //what to show if you lost the game
     } else if (gameOver) {
       referenceToSocket.emit("i_lost", enemyclientId);
       return (
@@ -193,6 +200,7 @@ function App() {
           <p>Refresh the page to start again</p>
         </div>
       );
+      //you're playing the game
     } else {
       return (
         <div>
@@ -218,6 +226,7 @@ function App() {
             }}
           >
             {enemyClientGameState.winningTracker.map(
+              //green and red boxes
               (currentElement, index) => {
                 const greenOrRed = currentElement ? "green" : "red";
                 console.log(greenOrRed);
